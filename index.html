@@ -3,105 +3,1012 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jana Padano · DJ</title>
-  <meta name="description" content="Jana Padano – DJ. If it's not vinyl it's not real!">
+  <title>Jana Padano · Techno DJ</title>
+  <meta name="description" content="Jana Padano – Techno DJ. If it's not vinyl it's not real!">
+  <meta name="theme-color" content="#2a2a2a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #2a2a2a;
-      --fg: #f2f2f2;
+      --panel: #1f1f1f;
+      --panel-2: #262626;
+      --line: #3e3e3e;
+      --fg: #e6e6e6;
+      --muted: #8f8f8f;
       --accent: #ffd400;
+      --ink: #111111;
+      --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+      --display: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
+      --script: "Pacifico", cursive;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { min-height: 100%; }
+    html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--fg);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      text-align: center;
-      padding: 48px 16px;
+      font-family: var(--mono);
+      font-size: 15px;
+      overflow-x: hidden;
+      position: relative;
     }
-    header {
+    /* Blueprint grid behind everything */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    /* Film grain + scanlines on top */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+      opacity: .07;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.9) 0 1px, transparent 1px 3px);
+    }
+    body > * { position: relative; z-index: 1; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    .wrap {
+      max-width: 1232px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+    .kicker {
+      font-size: 12px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ---------- Top bar ---------- */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(26,26,26,.88);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--line);
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .topbar-in {
       display: flex;
-      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      height: 44px;
+    }
+    .tb-id { color: var(--accent); font-weight: 700; }
+    .topbar nav { display: flex; gap: 20px; }
+    .topbar nav a { text-decoration: none; color: var(--muted); transition: color .15s; }
+    .topbar nav a:hover { color: var(--accent); }
+    .tb-status { display: flex; align-items: center; gap: 8px; color: var(--muted); white-space: nowrap; }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #555;
+      display: inline-block;
+    }
+    .on-air .dot { background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: blink 1s steps(2) infinite; }
+    .on-air #status { color: var(--accent); }
+    @keyframes blink { 50% { opacity: .25; } }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      display: flex;
       align-items: center;
       gap: clamp(24px, 5vw, 64px);
-      max-width: 1200px;
-      margin: 0 auto;
+      padding-top: clamp(32px, 6vw, 72px);
+      padding-bottom: clamp(32px, 6vw, 72px);
     }
     .logo {
       width: min(256px, 56vw);
       height: auto;
       display: block;
     }
+    .hero-text { display: flex; flex-direction: column; gap: 18px; }
     .slogan {
-      font-family: "Pacifico", cursive;
+      font-family: var(--script);
       font-weight: 400;
       font-size: clamp(2rem, 6vw, 4.5rem);
       color: var(--accent);
       line-height: 1.35;
-      text-align: left;
+      text-shadow: 0 0 28px rgba(255,212,0,.25);
     }
-    .bio {
-      max-width: 1200px;
-      margin: clamp(48px, 8vw, 96px) auto 0;
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
-    .bio p {
-      max-width: 60ch;
-      margin-inline: auto;
+    .tags span {
+      border: 1px solid var(--line);
+      padding: 6px 10px;
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--fg);
+      background: var(--panel);
+    }
+
+    /* ---------- Hazard tape ---------- */
+    .hazard {
+      height: 14px;
+      background: repeating-linear-gradient(-45deg, var(--accent) 0 14px, var(--ink) 14px 28px);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    /* ---------- Label / club banner ---------- */
+    .labels {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 22px 0 26px;
+    }
+    .labels .kicker { margin-bottom: 18px; }
+    .marquee {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+              mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: scroll 36s linear infinite;
+    }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    @keyframes scroll { to { transform: translateX(-50%); } }
+    .brand {
+      flex: none;
+      padding: 0 36px;
+      color: #9a9a9a;
+      transition: color .2s;
+    }
+    .brand:hover { color: var(--accent); }
+    .brand svg { display: block; height: 56px; width: auto; }
+    .brand text { font-family: var(--display); }
+    .brand .m { font-family: var(--mono); font-weight: 700; }
+
+    /* ---------- Sections ---------- */
+    .section { padding-top: clamp(56px, 9vw, 112px); }
+    .sec {
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      letter-spacing: .04em;
+      line-height: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: clamp(24px, 4vw, 40px);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+    .sec .num {
+      font-family: var(--mono);
+      font-size: 14px;
       color: var(--accent);
+      letter-spacing: .1em;
+    }
+    .glitch { position: relative; display: inline-block; }
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .sec:hover .glitch::before { opacity: .85; color: var(--accent); animation: glitch-a .35s steps(3) infinite; }
+    .sec:hover .glitch::after  { opacity: .6;  color: #7fd6ff;       animation: glitch-b .35s steps(3) infinite; }
+    @keyframes glitch-a {
+      0%   { transform: translate(-3px, 0); clip-path: inset(10% 0 60% 0); }
+      50%  { transform: translate(3px, 0);  clip-path: inset(55% 0 15% 0); }
+      100% { transform: translate(-2px, 0); clip-path: inset(30% 0 40% 0); }
+    }
+    @keyframes glitch-b {
+      0%   { transform: translate(3px, 0);  clip-path: inset(65% 0 5% 0); }
+      50%  { transform: translate(-3px, 0); clip-path: inset(5% 0 70% 0); }
+      100% { transform: translate(2px, 0);  clip-path: inset(40% 0 35% 0); }
+    }
+
+    /* ---------- Bio ---------- */
+    .bio-text { max-width: 60ch; margin-inline: auto; }
+    .bio-text p {
+      color: var(--accent);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-size: clamp(1.0625rem, 1.8vw, 1.375rem);
       line-height: 1.7;
-      text-align: left;
     }
-    .bio p + p {
-      margin-top: 1.25em;
+    .bio-text p + p { margin-top: 1.25em; }
+    @media (min-width: 900px) {
+      .bio-text {
+        max-width: none;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(32px, 5vw, 64px);
+      }
+      .bio-text p + p { margin-top: 0; }
     }
+
+    /* ---------- Player ---------- */
+    .deck {
+      display: grid;
+      grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+      gap: clamp(24px, 4vw, 48px);
+      align-items: center;
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line);
+      padding: clamp(16px, 3vw, 32px);
+      position: relative;
+    }
+    /* corner brackets */
+    .deck::before, .deck::after {
+      content: "";
+      position: absolute;
+      width: 18px; height: 18px;
+      border: 2px solid var(--accent);
+    }
+    .deck::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+    .deck::after  { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+    .turntable {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(160deg, #242424 0%, #1b1b1b 55%, #171717 100%);
+      border: 1px solid #333;
+      border-radius: 3px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 24px 48px rgba(0,0,0,.35);
+    }
+    .platter {
+      position: absolute;
+      left: 6%; top: 8%;
+      width: 74%; aspect-ratio: 1;
+      border-radius: 50%;
+      background: #0f0f0f;
+      box-shadow: 0 0 0 1px #3a3a3a, 0 0 0 4px #141414, 0 0 0 5px #2e2e2e, 0 10px 28px rgba(0,0,0,.55);
+      padding: 1.2%;
+    }
+    /* fixed light reflection: grooves turn underneath it */
+    .platter::after {
+      content: "";
+      position: absolute;
+      inset: 1.2%;
+      border-radius: 50%;
+      pointer-events: none;
+      background: conic-gradient(from 35deg, rgba(255,255,255,.07), transparent 10%, transparent 40%, rgba(255,255,255,.05) 50%, transparent 60%, transparent 90%, rgba(255,255,255,.07));
+      -webkit-mask: radial-gradient(circle, transparent 0 31%, #000 32%);
+              mask: radial-gradient(circle, transparent 0 31%, #000 32%);
+    }
+    .record {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      position: relative;
+      background:
+        radial-gradient(circle, transparent 0 46%, rgba(255,255,255,.025) 46.5% 47%, transparent 47.5% 70%, rgba(255,255,255,.025) 70.5% 71%, transparent 71.5%),
+        repeating-radial-gradient(circle, #0d0d0d 0 1px, #141414 1px 2px);
+      animation: spin 1.8s linear infinite;
+      animation-play-state: paused;
+    }
+    .playing .record { animation-play-state: running; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .record .label {
+      position: absolute;
+      inset: 33%;
+      border-radius: 50%;
+      background: var(--accent);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .record .label img { position: absolute; left: 50%; top: 50%; height: 80%; width: auto; transform: translate(-50%, -50%); }
+    .record .label::after {
+      content: "";
+      position: absolute;
+      width: 6%; height: 6%;
+      border-radius: 50%;
+      background: #bdbdbd;
+      box-shadow: 0 0 0 1px #111;
+    }
+    /* static tonearm resting in the groove */
+    .arm {
+      position: absolute;
+      left: calc(88% - 5px);
+      top: 7%;
+      width: 10px;
+      height: 64%;
+      transform-origin: 5px 5px;
+      transform: rotate(24deg);
+      filter: drop-shadow(-4px 8px 6px rgba(0,0,0,.5));
+    }
+    .arm .pivot {
+      position: absolute; top: -8px; left: -8px;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: #262626;
+      box-shadow: 0 0 0 1px #474747, inset 0 0 0 8px #1d1d1d;
+    }
+    .arm .pivot::after {
+      content: "";
+      position: absolute; inset: 9px;
+      border-radius: 50%;
+      background: #9a9a9a;
+    }
+    .arm .rod {
+      position: absolute; top: 5px; left: 4px;
+      width: 2px; height: calc(100% - 10px);
+      background: linear-gradient(90deg, #8c8c8c, #d6d6d6);
+      border-radius: 1px;
+    }
+    .arm .head {
+      position: absolute; bottom: -12px; left: -2px;
+      width: 12px; height: 20px;
+      background: #2a2a2a;
+      border: 1px solid #555;
+      border-top: 2px solid var(--accent);
+      border-radius: 1px;
+      transform: rotate(-16deg);
+    }
+    .tt-meta {
+      position: absolute;
+      right: 5%; bottom: 5%;
+      font-size: 10px; letter-spacing: .2em; color: #5c5c5c;
+      text-align: right; line-height: 1.6;
+    }
+
+    .console { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+    .np strong {
+      display: block;
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: clamp(2.25rem, 5vw, 3.25rem);
+      letter-spacing: .05em;
+      line-height: 1;
+      margin: 6px 0 6px;
+    }
+    .np .muted { color: var(--muted); font-size: 12px; }
+    #viz {
+      width: 100%;
+      height: 110px;
+      display: block;
+      background: #141414;
+      border: 1px solid var(--line);
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(16, 1fr);
+      gap: 4px;
+    }
+    .steps i {
+      height: 12px;
+      background: #2f2f2f;
+      border: 1px solid #3a3a3a;
+    }
+    .steps i:nth-child(4n+1) { border-color: #5a5a5a; }
+    .steps i.on { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 8px rgba(255,212,0,.6); }
+    .readout {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--line);
+    }
+    .readout div { padding: 10px 12px; }
+    .readout div + div { border-left: 1px solid var(--line); }
+    .readout span { display: block; font-size: 11px; letter-spacing: .2em; color: var(--muted); }
+    .readout b {
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: 2rem;
+      color: var(--accent);
+      letter-spacing: .06em;
+      font-variant-numeric: tabular-nums;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr;
+      gap: 20px;
+      align-items: end;
+    }
+    .btn-play {
+      font-family: var(--display);
+      font-size: 1.75rem;
+      letter-spacing: .12em;
+      background: var(--accent);
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 10px 26px 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: transform .08s, box-shadow .08s;
+    }
+    .btn-play:hover { background: repeating-linear-gradient(-45deg, var(--accent) 0 10px, #f0c800 10px 20px); }
+    .btn-play:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+    .btn-play .ico {
+      width: 0; height: 0;
+      border-left: 14px solid var(--ink);
+      border-top: 9px solid transparent;
+      border-bottom: 9px solid transparent;
+      margin-top: -3px;
+    }
+    .btn-play[aria-pressed="true"] .ico {
+      width: 14px; height: 14px;
+      border: 0;
+      background: var(--ink);
+    }
+    .fader {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .fader-head { display: flex; justify-content: space-between; }
+    .fader output { color: var(--fg); }
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 26px;
+      background: transparent;
+      cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      height: 4px;
+      background: repeating-linear-gradient(90deg, #555 0 1px, #2e2e2e 1px 10%);
+      border: 1px solid #444;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 26px;
+      margin-top: -12px;
+      background: linear-gradient(180deg, #d8d8d8, #8f8f8f);
+      border: 1px solid var(--ink);
+      box-shadow: inset 0 -2px 0 var(--accent), inset 0 12px 0 -10px var(--ink);
+    }
+    input[type=range]::-moz-range-track {
+      height: 4px;
+      background: #2e2e2e;
+      border: 1px solid #444;
+    }
+    input[type=range]::-moz-range-thumb {
+      width: 16px; height: 26px;
+      border-radius: 0;
+      background: linear-gradient(180deg, #d8d8d8, #8f8f8f);
+      border: 1px solid var(--ink);
+    }
+    .note { font-size: 12px; color: var(--muted); margin-top: 14px; }
+
+    /* ---------- Gallery ---------- */
     .gallery {
-      max-width: 1200px;
-      margin: clamp(48px, 8vw, 96px) auto 0;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: clamp(8px, 2vw, 24px);
     }
+    .gallery figure { position: relative; overflow: hidden; }
     .gallery img {
       display: block;
       width: 100%;
       height: auto;
-      border-radius: 4px;
+      filter: saturate(.8) contrast(1.05);
+      transition: filter .4s, transform .6s;
     }
-    .gallery .feature {
-      grid-column: 1 / -1;
+    .gallery figure:hover img { filter: saturate(1.1) contrast(1.05); transform: scale(1.02); }
+    .gallery .feature { grid-column: 1 / -1; }
+    .gallery .half img { aspect-ratio: 3 / 4; object-fit: cover; }
+    .gallery figcaption {
+      position: absolute;
+      left: 0; bottom: 0;
+      background: rgba(17,17,17,.82);
+      color: var(--fg);
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-top: 2px solid var(--accent);
     }
-    .gallery .half {
-      aspect-ratio: 3 / 4;
-      object-fit: cover;
+
+    /* ---------- Booking / footer ---------- */
+    .booking { padding-bottom: clamp(56px, 9vw, 112px); }
+    .mail {
+      display: inline-block;
+      font-family: var(--display);
+      font-size: clamp(2rem, 7vw, 5rem);
+      letter-spacing: .03em;
+      color: var(--accent);
+      text-decoration: none;
+      line-height: 1;
+      border-bottom: 3px solid transparent;
+      transition: border-color .2s;
+      overflow-wrap: anywhere;
+    }
+    .mail:hover { border-color: var(--accent); }
+    .booking p { margin-top: 16px; color: var(--muted); }
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 20px;
+      padding-bottom: 28px;
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 860px) {
+      .deck { grid-template-columns: 1fr; }
+      .turntable { max-width: 400px; margin: 0 auto; }
     }
     @media (max-width: 640px) {
-      header {
-        flex-direction: column;
-      }
-      .slogan {
-        text-align: center;
-      }
+      .tb-id { display: none; }
+      .topbar nav { gap: 14px; }
+      .hero { flex-direction: column; text-align: center; }
+      .tags { justify-content: center; }
+      .controls { grid-template-columns: 1fr 1fr; }
+      .btn-play { grid-column: 1 / -1; justify-content: center; }
+      .readout b { font-size: 1.6rem; }
+    }
+    @media (max-width: 420px) {
+      .topbar nav a:nth-child(3) { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .marquee-track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
+      .marquee-track [aria-hidden="true"] { display: none; }
+      .marquee { -webkit-mask-image: none; mask-image: none; }
+      .record, .on-air .dot { animation: none; }
+      .sec:hover .glitch::before, .sec:hover .glitch::after { animation: none; opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <header>
+
+  <div class="topbar">
+    <div class="wrap topbar-in">
+      <span class="tb-id">JP // 001</span>
+      <nav aria-label="Sections">
+        <a href="#bio">Bio</a>
+        <a href="#listen">Listen</a>
+        <a href="#floor">Floor</a>
+        <a href="#booking">Booking</a>
+      </nav>
+      <span class="tb-status" id="tbStatus"><i class="dot"></i><span id="status">Standby</span> · <span id="clock">--:--:--</span></span>
+    </div>
+  </div>
+
+  <header class="wrap hero">
     <h1><img class="logo" src="images/logo.webp" width="512" height="768" alt="Jana Padano"></h1>
-    <p class="slogan">If it's not vinyl<br>it's not real!</p>
+    <div class="hero-text">
+      <p class="kicker">[ Manifesto ]</p>
+      <p class="slogan">If it's not vinyl<br>it's not real!</p>
+      <div class="tags"><span>Techno</span><span>Industrial</span><span>Vinyl only</span></div>
+    </div>
   </header>
-  <main class="bio">
-    <p>Jana Padano is an amazing DJ, playing everything from tiny basement clubs to packed main floors. Once the first record drops, Jana gets entrenched in the music, lost in every groove and every beat. No playlists, no shortcuts: only the realest records make it into the crate.</p>
-    <p>Every set is a journey through sound, a sweaty, euphoric ritual that turns strangers into family. When the needle hits the wax, time stands still and the dancefloor becomes one living, breathing organism. Jana doesn't just play music. Jana makes the walls sweat and the sunrise jealous.</p>
-  </main>
-  <section class="gallery" aria-label="Photos">
-    <img class="feature" src="images/club-red.webp" width="2400" height="1600" alt="Crowd dancing in a club bathed in red light">
-    <img class="half" src="images/lasers-pink.webp" width="1200" height="1600" loading="lazy" alt="Pink laser beams over a crowd at a large venue">
-    <img class="half" src="images/discoballs-blue.webp" width="1200" height="1800" loading="lazy" alt="Blue lights and disco balls above a dancing crowd">
+
+  <div class="hazard" aria-hidden="true"></div>
+
+  <section class="labels" aria-label="Clubs and labels">
+    <div class="wrap"><p class="kicker">Played at // Released on</p></div>
+    <div class="marquee">
+      <div class="marquee-track">
+        <div class="brand-set" style="display:flex">
+          <div class="brand" title="Rotor 33">
+            <svg viewBox="0 0 190 64" role="img" aria-label="Rotor 33">
+              <circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="3"/>
+              <path d="M32 8v48M8 32h48M15 15l34 34M49 15L15 49" stroke="currentColor" stroke-width="2"/>
+              <circle cx="32" cy="32" r="7" fill="currentColor"/>
+              <text x="68" y="44" font-size="34" textLength="116" lengthAdjust="spacingAndGlyphs" fill="currentColor">ROTOR 33</text>
+            </svg>
+          </div>
+          <div class="brand" title="Halle Null">
+            <svg viewBox="0 0 200 64" role="img" aria-label="Halle Null">
+              <rect x="3" y="6" width="194" height="52" fill="none" stroke="currentColor" stroke-width="3"/>
+              <rect x="3" y="6" width="44" height="52" fill="currentColor"/>
+              <text x="25" y="45" font-size="34" text-anchor="middle" fill="#1f1f1f">Ø</text>
+              <text x="58" y="44" font-size="32" textLength="128" lengthAdjust="spacingAndGlyphs" fill="currentColor">HALLE NULL</text>
+            </svg>
+          </div>
+          <div class="brand" title="Ferrum Records">
+            <svg viewBox="0 0 210 64" role="img" aria-label="Ferrum Records">
+              <rect x="4" y="4" width="56" height="56" fill="none" stroke="currentColor" stroke-width="3"/>
+              <text x="10" y="18" font-size="11" class="m" fill="currentColor">26</text>
+              <text x="32" y="50" font-size="32" text-anchor="middle" fill="currentColor">Fe</text>
+              <text x="72" y="34" font-size="30" textLength="130" lengthAdjust="spacingAndGlyphs" fill="currentColor">FERRUM</text>
+              <text x="73" y="52" font-size="11" textLength="128" lengthAdjust="spacingAndGlyphs" class="m" fill="currentColor">RECORDS</text>
+            </svg>
+          </div>
+          <div class="brand" title="Schicht 6">
+            <svg viewBox="0 0 180 64" role="img" aria-label="Schicht 6">
+              <rect x="4" y="12" width="44" height="7" fill="currentColor"/>
+              <rect x="4" y="28" width="34" height="7" fill="currentColor"/>
+              <rect x="4" y="44" width="22" height="7" fill="currentColor"/>
+              <text x="60" y="46" font-size="36" textLength="116" lengthAdjust="spacingAndGlyphs" fill="currentColor">SCHICHT 6</text>
+            </svg>
+          </div>
+          <div class="brand" title="Grauton">
+            <svg viewBox="0 0 190 64" role="img" aria-label="Grauton">
+              <path d="M30 6L56 56H4Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M30 26L42 50H18Z" fill="currentColor"/>
+              <text x="68" y="42" font-size="24" textLength="116" lengthAdjust="spacingAndGlyphs" class="m" fill="currentColor">grauton</text>
+            </svg>
+          </div>
+          <div class="brand" title="Depot 9">
+            <svg viewBox="0 0 170 64" role="img" aria-label="Depot 9">
+              <path d="M32 4L56 18V46L32 60L8 46V18Z" fill="none" stroke="currentColor" stroke-width="3"/>
+              <circle cx="32" cy="32" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="32" y="40" font-size="22" text-anchor="middle" fill="currentColor">9</text>
+              <text x="68" y="44" font-size="34" textLength="98" lengthAdjust="spacingAndGlyphs" fill="currentColor">DEPOT</text>
+            </svg>
+          </div>
+        </div>
+        <!-- duplicate set for a seamless loop -->
+        <div class="brand-set" style="display:flex" aria-hidden="true"></div>
+      </div>
+    </div>
   </section>
+
+  <section id="bio" class="wrap section">
+    <h2 class="sec"><span class="num">01 /</span><span class="glitch" data-text="Bio">Bio</span></h2>
+    <div class="bio-text">
+      <p>Jana Padano is an amazing DJ, playing everything from tiny basement clubs to packed main floors. Once the first record drops, Jana gets entrenched in the music, lost in every groove and every beat. No playlists, no shortcuts: only the realest records make it into the crate.</p>
+      <p>Every set is a journey through sound, a sweaty, euphoric ritual that turns strangers into family. When the needle hits the wax, time stands still and the dancefloor becomes one living, breathing organism. Jana doesn't just play music. Jana makes the walls sweat and the sunrise jealous.</p>
+    </div>
+  </section>
+
+  <section id="listen" class="wrap section">
+    <h2 class="sec"><span class="num">02 /</span><span class="glitch" data-text="Listen">Listen</span></h2>
+    <div class="deck" id="deck">
+      <div class="turntable" aria-hidden="true">
+        <div class="platter"><div class="record"><div class="label"><img src="images/logo.webp" alt=""></div></div></div>
+        <div class="arm"><span class="rod"></span><span class="pivot"></span><span class="head"></span></div>
+        <span class="tt-meta">33⅓ RPM<br>QUARTZ LOCK</span>
+      </div>
+      <div class="console">
+        <div class="np">
+          <span class="kicker">Now playing</span>
+          <strong>Grauzone</strong>
+          <span class="muted">Live synth sequence · generated in your browser</span>
+        </div>
+        <canvas id="viz" aria-hidden="true"></canvas>
+        <div class="steps" id="steps" aria-hidden="true"></div>
+        <div class="readout">
+          <div><span>BPM</span><b id="bpm">132.0</b></div>
+          <div><span>BAR</span><b id="bar">000</b></div>
+          <div><span>TIME</span><b id="time">00:00</b></div>
+        </div>
+        <div class="controls">
+          <button class="btn-play" id="play" aria-pressed="false"><span class="ico"></span><span class="txt">Start</span></button>
+          <label class="fader">
+            <span class="fader-head">Pitch <output id="pitchOut">±0.0%</output></span>
+            <input type="range" id="pitch" min="-8" max="8" step="0.1" value="0">
+          </label>
+          <label class="fader">
+            <span class="fader-head">Volume <output id="volOut">70</output></span>
+            <input type="range" id="vol" min="0" max="100" value="70">
+          </label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="floor" class="wrap section">
+    <h2 class="sec"><span class="num">03 /</span><span class="glitch" data-text="Floor">Floor</span></h2>
+    <div class="gallery">
+      <figure class="feature">
+        <img src="images/club-red.webp" width="2400" height="1600" loading="lazy" alt="Crowd dancing in a club bathed in red light">
+        <figcaption>IMG_001 — Red room</figcaption>
+      </figure>
+      <figure class="half">
+        <img src="images/lasers-pink.webp" width="1200" height="1600" loading="lazy" alt="Pink laser beams over a crowd at a large venue">
+        <figcaption>IMG_002 — Main floor</figcaption>
+      </figure>
+      <figure class="half">
+        <img src="images/discoballs-blue.webp" width="1200" height="1800" loading="lazy" alt="Blue lights and disco balls above a dancing crowd">
+        <figcaption>IMG_003 — 05:40</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="booking" class="wrap section booking">
+    <h2 class="sec"><span class="num">04 /</span><span class="glitch" data-text="Booking">Booking</span></h2>
+    <a class="mail" href="mailto:booking@jana-padano.com">booking@jana-padano.com</a>
+    <p>Clubs, festivals, warehouses. Vinyl only.</p>
+  </section>
+
+  <div class="hazard" aria-hidden="true"></div>
+  <footer class="wrap foot">
+    <span>© 2026 Jana Padano</span>
+    <span>No sync. No mercy. 33⅓ RPM.</span>
+  </footer>
+
+  <script>
+  (() => {
+    // ----- Marquee: clone the logo set for a seamless loop -----
+    const sets = document.querySelectorAll('.brand-set');
+    sets[1].innerHTML = sets[0].innerHTML;
+
+    // ----- Clock -----
+    const clock = document.getElementById('clock');
+    const tick = () => { clock.textContent = new Date().toLocaleTimeString('de-DE', { hour12: false }); };
+    tick(); setInterval(tick, 1000);
+
+    // ----- Step LEDs -----
+    const stepsEl = document.getElementById('steps');
+    for (let i = 0; i < 16; i++) stepsEl.appendChild(document.createElement('i'));
+    const leds = stepsEl.children;
+
+    // ----- Elements -----
+    const deck = document.getElementById('deck');
+    const playBtn = document.getElementById('play');
+    const pitch = document.getElementById('pitch');
+    const pitchOut = document.getElementById('pitchOut');
+    const vol = document.getElementById('vol');
+    const volOut = document.getElementById('volOut');
+    const bpmEl = document.getElementById('bpm');
+    const barEl = document.getElementById('bar');
+    const timeEl = document.getElementById('time');
+    const tbStatus = document.getElementById('tbStatus');
+    const statusEl = document.getElementById('status');
+    const record = document.querySelector('.record');
+    const canvas = document.getElementById('viz');
+    const c2d = canvas.getContext('2d');
+
+    const BASE_BPM = 132;
+    let bpm = BASE_BPM;
+
+    // ----- Audio engine: a small techno sequencer built on Web Audio -----
+    let ctx, master, comp, analyser, delay, delaySend, noiseBuf;
+    let playing = false, step = 0, bar = 0, nextTime = 0, timer = null, startTime = 0;
+    let queue = [];
+    const LOOKAHEAD = 0.12, INTERVAL = 25;
+
+    function initAudio() {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -16; comp.ratio.value = 4;
+      comp.attack.value = 0.003; comp.release.value = 0.12;
+      master = ctx.createGain(); master.gain.value = 0;
+      analyser = ctx.createAnalyser(); analyser.fftSize = 256; analyser.smoothingTimeConstant = 0.78;
+      comp.connect(master); master.connect(analyser); analyser.connect(ctx.destination);
+
+      // dub delay bus
+      delay = ctx.createDelay(2);
+      const fb = ctx.createGain(); fb.gain.value = 0.42;
+      const dlp = ctx.createBiquadFilter(); dlp.type = 'lowpass'; dlp.frequency.value = 2200;
+      const dhp = ctx.createBiquadFilter(); dhp.type = 'highpass'; dhp.frequency.value = 300;
+      delay.connect(dlp); dlp.connect(dhp); dhp.connect(fb); fb.connect(delay); dhp.connect(comp);
+      delaySend = ctx.createGain(); delaySend.gain.value = 0.55; delaySend.connect(delay);
+      setDelayTime();
+
+      noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+      const d = noiseBuf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    function setDelayTime() {
+      if (!ctx) return;
+      delay.delayTime.setTargetAtTime((60 / bpm) * 0.75, ctx.currentTime, 0.05); // dotted 8th
+    }
+
+    function kick(t) {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.frequency.setValueAtTime(165, t);
+      o.frequency.exponentialRampToValueAtTime(46, t + 0.09);
+      g.gain.setValueAtTime(1.0, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.42);
+      o.connect(g); g.connect(comp);
+      o.start(t); o.stop(t + 0.45);
+      // click transient
+      const c = ctx.createBufferSource(), cf = ctx.createBiquadFilter(), cg = ctx.createGain();
+      c.buffer = noiseBuf; cf.type = 'highpass'; cf.frequency.value = 3000;
+      cg.gain.setValueAtTime(0.25, t); cg.gain.exponentialRampToValueAtTime(0.001, t + 0.008);
+      c.connect(cf); cf.connect(cg); cg.connect(comp);
+      c.start(t); c.stop(t + 0.02);
+    }
+    function hat(t, open, vel) {
+      const s = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+      const dur = open ? 0.16 : 0.035;
+      s.buffer = noiseBuf; f.type = 'highpass'; f.frequency.value = open ? 7000 : 9500;
+      g.gain.setValueAtTime(vel, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      s.connect(f); f.connect(g); g.connect(comp);
+      s.start(t, Math.random() * 0.5); s.stop(t + dur + 0.02);
+    }
+    function clap(t, vel, wet = 0.15) {
+      const s = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+      s.buffer = noiseBuf; f.type = 'bandpass'; f.frequency.value = 1600; f.Q.value = 1.2;
+      g.gain.setValueAtTime(0.0001, t);
+      [0, 0.011, 0.022].forEach(o => {
+        g.gain.setValueAtTime(vel, t + o);
+        g.gain.exponentialRampToValueAtTime(vel * 0.25, t + o + 0.009);
+      });
+      g.gain.setValueAtTime(vel * 0.8, t + 0.031);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+      const w = ctx.createGain(); w.gain.value = wet;
+      s.connect(f); f.connect(g); g.connect(comp); g.connect(w); w.connect(delaySend);
+      s.start(t, Math.random() * 0.5); s.stop(t + 0.25);
+    }
+    function bass(t, freq, cutoff) {
+      const o = ctx.createOscillator(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+      o.type = 'sawtooth'; o.frequency.value = freq;
+      f.type = 'lowpass'; f.Q.value = 7;
+      f.frequency.setValueAtTime(cutoff, t);
+      f.frequency.exponentialRampToValueAtTime(90, t + 0.12);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.32, t + 0.005);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+      o.connect(f); f.connect(g); g.connect(comp);
+      o.start(t); o.stop(t + 0.16);
+    }
+    function stab(t) {
+      const f = ctx.createBiquadFilter(), g = ctx.createGain();
+      f.type = 'lowpass'; f.Q.value = 3;
+      f.frequency.setValueAtTime(2600, t);
+      f.frequency.exponentialRampToValueAtTime(380, t + 0.22);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.085, t + 0.004);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+      [220, 261.63, 329.63, 392].forEach((fr, i) => {
+        const o = ctx.createOscillator();
+        o.type = 'sawtooth'; o.frequency.value = fr; o.detune.value = i % 2 ? 8 : -8;
+        o.connect(f); o.start(t); o.stop(t + 0.3);
+      });
+      f.connect(g); g.connect(comp); g.connect(delaySend);
+    }
+
+    // 32-bar arrangement: intro builds up, bars 28–31 of every cycle are a breakdown
+    function playStep(s, b, t) {
+      const cyc = b % 32;
+      const brk = cyc >= 28;
+      if (s % 4 === 0 && !brk) kick(t);
+      if (b >= 2) {
+        if (s % 4 === 2 && b >= 4 && !brk) hat(t, true, 0.22);
+        else hat(t, false, s % 2 ? 0.07 : 0.13);
+      }
+      if (b >= 12 && !brk && (s === 4 || s === 12)) clap(t, 0.7);
+      if (cyc === 31 && s % 2 === 0) clap(t, 0.12 + 0.5 * (s / 16), 0.05);
+      if (b >= 8 && !brk && s % 4 !== 0) {
+        const cutoff = 260 + 1100 * (0.5 - 0.5 * Math.cos((b / 16) * Math.PI * 2));
+        bass(t, (b % 4 === 3 && s >= 12) ? 49 : 55, cutoff);
+      }
+      if (b >= 16 && (s === 3 || (b % 2 === 1 && s === 10))) stab(t);
+    }
+
+    function scheduler() {
+      while (nextTime < ctx.currentTime + LOOKAHEAD) {
+        playStep(step, bar, nextTime);
+        queue.push({ step, bar, time: nextTime });
+        nextTime += 60 / bpm / 4;
+        step = (step + 1) % 16;
+        if (step === 0) bar++;
+      }
+    }
+
+    function start() {
+      if (!ctx) initAudio();
+      ctx.resume();
+      step = 0; bar = 0; queue = [];
+      nextTime = ctx.currentTime + 0.08;
+      startTime = nextTime;
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setTargetAtTime(volume(), ctx.currentTime, 0.01);
+      timer = setInterval(scheduler, INTERVAL);
+      scheduler();
+      playing = true;
+      setUI();
+    }
+    function stop() {
+      clearInterval(timer);
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setTargetAtTime(0, ctx.currentTime, 0.04);
+      playing = false;
+      queue = [];
+      setUI();
+    }
+    function volume() { const v = vol.value / 100; return v * v * 0.9; }
+
+    function setUI() {
+      deck.classList.toggle('playing', playing);
+      tbStatus.classList.toggle('on-air', playing);
+      statusEl.textContent = playing ? 'On air' : 'Standby';
+      playBtn.setAttribute('aria-pressed', String(playing));
+      playBtn.querySelector('.txt').textContent = playing ? 'Stop' : 'Start';
+      if (!playing) { [...leds].forEach(l => l.classList.remove('on')); }
+    }
+
+    playBtn.addEventListener('click', () => (playing ? stop() : start()));
+
+    // Autoplay on page load. Most browsers block sound until the visitor interacts,
+    // so if the audio context stays suspended, start on the first click, tap or key press.
+    function autostart() {
+      initAudio();
+      ctx.resume().catch(() => {});
+      setTimeout(() => {
+        if (ctx.state === 'running') { if (!playing) start(); return; }
+        const events = ['pointerdown', 'touchend', 'click', 'keydown'];
+        const cleanup = () => events.forEach(ev => window.removeEventListener(ev, onGesture, true));
+        function onGesture(e) {
+          cleanup();
+          if (playBtn.contains(e.target)) return; // the button starts playback itself
+          if (!playing) start();
+        }
+        events.forEach(ev => window.addEventListener(ev, onGesture, true));
+      }, 150);
+    }
+    pitch.addEventListener('input', () => {
+      const p = parseFloat(pitch.value);
+      bpm = BASE_BPM * (1 + p / 100);
+      pitchOut.textContent = (p > 0 ? '+' : p < 0 ? '' : '±') + p.toFixed(1) + '%';
+      bpmEl.textContent = bpm.toFixed(1);
+      record.style.animationDuration = (1.8 / (1 + p / 100)).toFixed(3) + 's';
+      setDelayTime();
+    });
+    vol.addEventListener('input', () => {
+      volOut.textContent = vol.value;
+      if (ctx && playing) master.gain.setTargetAtTime(volume(), ctx.currentTime, 0.02);
+    });
+
+    // ----- Visualizer + LEDs -----
+    let bins = null, lastStep = -1;
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(canvas.clientWidth * dpr);
+      canvas.height = Math.round(canvas.clientHeight * dpr);
+    }
+    new ResizeObserver(resize).observe(canvas);
+    resize();
+
+    function draw() {
+      const w = canvas.width, h = canvas.height;
+      c2d.clearRect(0, 0, w, h);
+      const n = 48, gap = Math.max(2, w / n * 0.25), bw = w / n - gap;
+      const seg = Math.max(3, h / 22);
+      if (playing && analyser) {
+        if (!bins) bins = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(bins);
+        while (queue.length && queue[0].time <= ctx.currentTime) {
+          const q = queue.shift();
+          if (q.step !== lastStep) {
+            if (lastStep >= 0) leds[lastStep].classList.remove('on');
+            leds[q.step].classList.add('on');
+            lastStep = q.step;
+          }
+          barEl.textContent = String(q.bar + 1).padStart(3, '0');
+        }
+        const secs = Math.max(0, ctx.currentTime - startTime);
+        timeEl.textContent = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(Math.floor(secs % 60)).padStart(2, '0');
+      }
+      for (let i = 0; i < n; i++) {
+        const v = playing && bins ? bins[Math.min(bins.length - 1, Math.floor(i * 1.6))] / 255 : 0;
+        const segs = Math.max(1, Math.round(v * (h / seg)));
+        const x = i * (bw + gap) + gap / 2;
+        for (let s = 0; s < segs; s++) {
+          const y = h - (s + 1) * seg;
+          c2d.fillStyle = s > (h / seg) * 0.8 ? '#ff6a3d' : (playing ? '#ffd400' : '#3a3a3a');
+          c2d.fillRect(x, y + 1, bw, seg - 2);
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+    autostart();
+  })();
+  </script>
 </body>
 </html>
