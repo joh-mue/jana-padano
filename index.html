@@ -3,49 +3,105 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>jana-padano.com</title>
-  <meta name="description" content="jana-padano.com is currently under development.">
+  <title>Jana Padano · DJ</title>
+  <meta name="description" content="Jana Padano – DJ. If it's not vinyl it's not real!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #faf9f7;
-      --fg: #1f1f1f;
-      --muted: #6b6b6b;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #161616;
-        --fg: #f2f2f2;
-        --muted: #9a9a9a;
-      }
+      --bg: #2a2a2a;
+      --fg: #f2f2f2;
+      --accent: #ffd400;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    html, body { min-height: 100%; }
     body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
       background: var(--bg);
       color: var(--fg);
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       text-align: center;
+      padding: 48px 16px;
     }
-    h1 {
-      font-size: clamp(1.75rem, 5vw, 2.75rem);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
+    header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: clamp(24px, 5vw, 64px);
+      max-width: 1200px;
+      margin: 0 auto;
     }
-    p {
-      font-size: 1.125rem;
-      color: var(--muted);
+    .logo {
+      width: min(256px, 56vw);
+      height: auto;
+      display: block;
+    }
+    .slogan {
+      font-family: "Pacifico", cursive;
+      font-weight: 400;
+      font-size: clamp(2rem, 6vw, 4.5rem);
+      color: var(--accent);
+      line-height: 1.35;
+      text-align: left;
+    }
+    .bio {
+      max-width: 1200px;
+      margin: clamp(48px, 8vw, 96px) auto 0;
+    }
+    .bio p {
+      max-width: 60ch;
+      margin-inline: auto;
+      color: var(--accent);
+      font-size: clamp(1.0625rem, 1.8vw, 1.375rem);
+      line-height: 1.7;
+      text-align: left;
+    }
+    .bio p + p {
+      margin-top: 1.25em;
+    }
+    .gallery {
+      max-width: 1200px;
+      margin: clamp(48px, 8vw, 96px) auto 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(8px, 2vw, 24px);
+    }
+    .gallery img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .gallery .feature {
+      grid-column: 1 / -1;
+    }
+    .gallery .half {
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+    }
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column;
+      }
+      .slogan {
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>jana-padano.com</h1>
-    <p>This website is still under development. Please check back soon.</p>
+  <header>
+    <h1><img class="logo" src="images/logo.webp" width="512" height="768" alt="Jana Padano"></h1>
+    <p class="slogan">If it's not vinyl<br>it's not real!</p>
+  </header>
+  <main class="bio">
+    <p>Jana Padano is an amazing DJ, playing everything from tiny basement clubs to packed main floors. Once the first record drops, Jana gets entrenched in the music, lost in every groove and every beat. No playlists, no shortcuts: only the realest records make it into the crate.</p>
+    <p>Every set is a journey through sound, a sweaty, euphoric ritual that turns strangers into family. When the needle hits the wax, time stands still and the dancefloor becomes one living, breathing organism. Jana doesn't just play music. Jana makes the walls sweat and the sunrise jealous.</p>
   </main>
+  <section class="gallery" aria-label="Photos">
+    <img class="feature" src="images/club-red.webp" width="2400" height="1600" alt="Crowd dancing in a club bathed in red light">
+    <img class="half" src="images/lasers-pink.webp" width="1200" height="1600" loading="lazy" alt="Pink laser beams over a crowd at a large venue">
+    <img class="half" src="images/discoballs-blue.webp" width="1200" height="1800" loading="lazy" alt="Blue lights and disco balls above a dancing crowd">
+  </section>
 </body>
 </html>
